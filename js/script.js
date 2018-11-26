@@ -1,6 +1,3 @@
-$(function(){
-    
-});
 
 var model = {
     // Original array to load the data from when it's manipulated
@@ -34,7 +31,7 @@ var viewModel = {
     
     // open InfoWindow of a specific marker, load data from wikimedia, and add animation
     openInfoWindow: function (marker, infoWindow) { 
-        var url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&list=geosearch&gscoord='+marker.getPosition().lat()+'%7C'+marker.getPosition().lng()+'&gsradius=10000&gslimit=10';
+        var url = 'https://qen.wikipedia.org/w/api.php?action=query&format=json&list=geosearch&gscoord='+marker.getPosition().lat()+'%7C'+marker.getPosition().lng()+'&gsradius=10000&gslimit=10';
 
         if (infoWindow.marker != marker){
             $.ajax({
@@ -45,7 +42,10 @@ var viewModel = {
                     if(!response.error){
                         putmarker(response.query.geosearch);
                     }
-                    else{console.log('ERROR: ' + response.error);}
+                },
+                error: function (xhr, error) {
+                  alert(xhr.status + " Error Loading info about nearby places, error type: " + error);
+                  putmarker([]);
                 }
             });
         }
@@ -109,6 +109,10 @@ var viewModel = {
 
         });
 
+    },
+
+    mapError: function(){
+        alert("Error Loading Google Maps");
     },
 
     // toggle the side bar
